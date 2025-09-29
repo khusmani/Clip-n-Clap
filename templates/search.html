@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block header_image %} /static/search.png{% endblock %}
+{% block content %}
+
+    <div align="center" >
+            <h1>{% block title %}{{title}}{% endblock %}</h1>
+        <br>
+        <table>
+            <tr align="center">
+                <td align="center" width="50%">
+                    <form class="search" action="/searchResults" method="post">
+                      <input type="text" placeholder="Search.." ID="searchText" name="searchText">
+                        <button type="submit"><i class="fa fa-search"></i></button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+      </div>
+
+{% endblock %}

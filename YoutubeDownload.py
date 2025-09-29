@@ -1,0 +1,89 @@
+# importing packages
+from datetime import datetime
+from moviepy.audio.AudioClip import concatenate_audioclips
+from moviepy.audio.io.AudioFileClip import AudioFileClip
+from pytubefix import YouTube
+import os
+from moviepy.video.io.VideoFileClip import VideoFileClip
+
+
+def convert_mp4_to_mp3(input_file, output_file, clip_start_sec=0.0, clip_end_sec=None):
+    print(f'clip_start_sec <{clip_start_sec}>, clip_end_sec <{clip_end_sec}>')
+    video_clip = VideoFileClip(input_file).subclipped(clip_start_sec, clip_end_sec)
+    audio_clip = video_clip.audio
+    audio_clip.write_audiofile(output_file, codec='mp3')
+    audio_clip.close()
+    video_clip.close()
+
+
+def download_mp4(yt, destination):
+    # look for the MP4 stream
+    video = yt.streams.filter(only_audio=False, file_extension='mp4').first()
+    # download the file
+    mp4_file = video.download(output_path=destination, skip_existing=False)
+    print(f'out_file <{mp4_file}>')
+    return mp4_file
+
+
+def get_thumbnail_url(url):
+    yt = YouTube(url)
+    return yt.thumbnail_url
+
+
+def download_mp3(url_to_download, target_dir, clip_start_sec=0.0, clip_end_sec=None):
+    # download the MP4 video
+    yt = YouTube(url_to_download)
+    mp4_file = download_mp4(yt, target_dir)
+
+    # convert MP4 to MP3
+    base, ext = os.path.splitext(mp4_file)
+    print(f'base <{base}>, ext <{ext}>')
+
+    mp3_path = ""
+    if ext == ".mp4":
+        print("Got an MP4 file....converting to MP3")
+        mp3_path = os.path.join(target_dir, base + '.mp3')
+        convert_mp4_to_mp3(mp4_file, mp3_path, clip_start_sec, clip_end_sec)
+
+    # delete the MP4 file
+    os.remove(mp4_file)
+
+    # result of success
+    print(yt.title + " has been successfully downloaded.")
+    print(f'Video Thumbnail URL <{yt.thumbnail_url}>')
+
+    return mp3_path
+
+
+def download_song_clip(url, start_time, end_time, target_dir):
+    start_second = float(start_time.split(':')[0]) * 60 + float(start_time.split(':')[1])
+    end_second = float(end_time.split(':')[0]) * 60 + float(end_time.split(':')[1])
+    print(f'Input audio file <{url}>')
+    print(f'Output dir <{target_dir}>')
+    print(f'Start Second: {start_second}')
+    print(f'End Second: {end_second}')
+    mp3_song_clip = download_mp3(url, target_dir, start_second, end_second)
+    return mp3_song_clip
+
+
+def trim_merge(url_list, start_time_list, end_time_list):
+    mp3_list = []
+    target_dir = 'static\\working_dir'
+    for index, url in enumerate(url_list):
+        mp3_list.append(download_song_clip(url, start_time_list[index], end_time_list[index], target_dir))
+
+    merged_file = "merged_file_" + datetime.now().strftime("%b-%d-%Y_%H-%M-%S") + ".mp3"
+    merged_file = os.path.join(target_dir, merged_file)
+    print(f'merged file name <{merged_file}>')
+    audio_clips = [AudioFileClip(c) for c in mp3_list]
+    final_audio_clip = concatenate_audioclips(audio_clips)
+    final_audio_clip.write_audiofile(merged_file)
+
+    for c in mp3_list:
+        os.remove(c)
+
+    print(f'output file <{merged_file}> created')
+    return merged_file
+
+
+

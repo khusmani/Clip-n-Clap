@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block header_image %} /static/header9.png{% endblock %}
+
+{% block content %}
+    <div align="center">
+            <h1>Welcome to {% block title %}Khurshid's Audio Trimmer{% endblock %}</h1>
+    </div>
+    <form action="/trimAndMerge" method="post">
+        <div class="urlDiv">
+            <br>
+            <table align="center">
+                <tr>
+                    <td align="right">
+                        <label for="url1">First Video URL:</label>
+                        &nbsp;
+                    </td>
+                    <td>
+                        &nbsp;
+                        <input type="text" id="url1" name="url1"><br><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">
+                        <label for="url1_start">Start Time (MM:SS.mmm):</label>
+                        &nbsp;
+                    </td>
+                    <td>
+                        &nbsp;
+                        <input type="text" id="url1_start" name="url1_start"><br><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">
+                        <label for="url1_end">Start Time (MM:SS.mmm):</label>
+                        &nbsp;
+                    </td>
+                    <td>
+                        &nbsp;
+                        <input type="text" id="url1_end" name="url1_end"><br><br>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        &nbsp;
+        <div class="urlDiv">
+            <br>
+                    <table align="center">
+                        <tr>
+                            <td align="right">
+                                <label for="url2">Second Video URL:</label>
+                                &nbsp;
+                            </td>
+                            <td>
+                                &nbsp;
+                                <input type="text" id="url2" name="url2"><br><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">
+                                <label for="url2_start">Start Time (MM:SS.mmm):</label>
+                                &nbsp;
+                            </td>
+                            <td>
+                                &nbsp;
+                                <input type="text" id="url2_start" name="url2_start"><br><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">
+                                <label for="url2_end">Start Time (MM:SS.mmm):</label>
+                                &nbsp;
+                            </td>
+                            <td>
+                                &nbsp;
+                                <input type="text" id="url2_end" name="url2_end"><br><br>
+                            </td>
+                        </tr>
+                    </table>
+
+        </div>
+        <div class="form-group" align="center">
+            &nbsp;<br>
+            <input type="submit" value="Trim & Merge" class="btn btn-primary">
+        </div>
+    </form>
+
+
+{% endblock %}

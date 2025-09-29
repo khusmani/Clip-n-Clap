@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block header_image %} /static/search.png{% endblock %}
+{% block content %}
+    <div align="center">
+            <h1> {% block title %}Search Results{% endblock %}</h1>
+    </div>
+
+    <div align="center" >
+        <br>
+        <table>
+            <tr align="center">
+                <td align="center" width="50%">
+                    <form name="search" class="search" action="/searchResults" method="post">
+                      <input type="text" placeholder="Search..." ID="searchText" name="searchText">
+                        <button type="submit"><i class="fa fa-search"></i></button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+        <br>
+    </div>
+    <script>
+        document.getElementById("searchText").value="{{search_text}}"
+    </script>
+    <div class="urlDiv">
+        <br>
+        <table align="center">
+            {% for yt in results.results %}
+                <tr>
+                    <td align="center" width="25%">
+                        <a target="_blank" href="{{yt.watch_url}}"><img src="{{yt.thumbnail_url}}" width="50%"/></a>&nbsp;
+                        <br><br>
+                    </td>
+                    <td align="left" valign="center">
+                        <a target="_blank" href="{{yt.watch_url}}">{{yt.title}}</a><br>
+                        <!--
+                        <video width="320" height="240" controls>
+                          <source src="https://www.youtube.com/watch?v=87JIOAX3njM" type="video/mp4">
+                          Your browser does not support the video tag.
+                        </video>
+                        -->
+                        <br><br>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+        &nbsp;
+
+{% endblock %}
