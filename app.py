@@ -34,8 +34,8 @@ def audioplayer():
     return render_template('audioplayer.html', audio_filename="merged.mp3")
 
 
-@app.route('/trimAndMerge/', methods=('GET', 'POST'))
-def trim_and_merge():
+@app.route('/trimAndMerge1/', methods=('GET', 'POST'))
+def trim_and_merge1():
     merged_file = ""
     merged_file_dir = ""
     merged_file_name = ""
@@ -59,6 +59,35 @@ def trim_and_merge():
 
     return render_template('audioplayer.html', merged_file_dir=merged_file_dir, merged_file_name=merged_file_name )
 
+@app.route('/trimAndMerge/', methods=('GET', 'POST'))
+def trim_and_merge():
+    merged_file = ""
+    merged_file_dir = ""
+    merged_file_name = ""
+
+    if request.method == 'POST':
+        # Get lists of values instead of individual items
+        url_list = request.form.getlist('url[]')
+        start_time_list = request.form.getlist('start[]')
+        end_time_list = request.form.getlist('end[]')
+
+        # Debug print
+        for i, (url, start, end) in enumerate(zip(url_list, start_time_list, end_time_list), start=1):
+            print(f'url{i} <{url}>, start <{start}>, end <{end}>')
+
+        # Call trim_merge function
+        merged_file = trim_merge(url_list, start_time_list, end_time_list)
+        merged_file_dir = os.path.dirname(merged_file)
+        merged_file_name = os.path.basename(merged_file)
+
+        print(f'merged_file <{merged_file}>')
+        print(f'merged_file_dir <{merged_file_dir}>, merged_file_name <{merged_file_name}>')
+
+    return render_template(
+        'audioplayer.html',
+        merged_file_dir=merged_file_dir,
+        merged_file_name=merged_file_name
+    )
 
 @app.route('/searchResults/', methods=('GET', 'POST'))
 def search_results():

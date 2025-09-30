@@ -30,7 +30,7 @@ def get_thumbnail_url(url):
     return yt.thumbnail_url
 
 
-def download_mp3(url_to_download, target_dir, clip_start_sec=0.0, clip_end_sec=None):
+def download_mp3(url_to_download, index, target_dir, clip_start_sec=0.0, clip_end_sec=None):
     # download the MP4 video
     yt = YouTube(url_to_download)
     mp4_file = download_mp4(yt, target_dir)
@@ -42,27 +42,27 @@ def download_mp3(url_to_download, target_dir, clip_start_sec=0.0, clip_end_sec=N
     mp3_path = ""
     if ext == ".mp4":
         print("Got an MP4 file....converting to MP3")
-        mp3_path = os.path.join(target_dir, base + '.mp3')
+        mp3_path = os.path.join(target_dir, base + str(index) + '.mp3')
         convert_mp4_to_mp3(mp4_file, mp3_path, clip_start_sec, clip_end_sec)
 
     # delete the MP4 file
     os.remove(mp4_file)
 
     # result of success
-    print(yt.title + " has been successfully downloaded.")
+    print(yt.title + " has been successfully downloaded and saved as <" + mp3_path.title() + ">.")
     print(f'Video Thumbnail URL <{yt.thumbnail_url}>')
 
     return mp3_path
 
 
-def download_song_clip(url, start_time, end_time, target_dir):
+def download_song_clip(url, index, start_time, end_time, target_dir):
     start_second = float(start_time.split(':')[0]) * 60 + float(start_time.split(':')[1])
     end_second = float(end_time.split(':')[0]) * 60 + float(end_time.split(':')[1])
     print(f'Input audio file <{url}>')
     print(f'Output dir <{target_dir}>')
     print(f'Start Second: {start_second}')
     print(f'End Second: {end_second}')
-    mp3_song_clip = download_mp3(url, target_dir, start_second, end_second)
+    mp3_song_clip = download_mp3(url, index, target_dir, start_second, end_second)
     return mp3_song_clip
 
 
@@ -70,7 +70,7 @@ def trim_merge(url_list, start_time_list, end_time_list):
     mp3_list = []
     target_dir = 'static\\working_dir'
     for index, url in enumerate(url_list):
-        mp3_list.append(download_song_clip(url, start_time_list[index], end_time_list[index], target_dir))
+        mp3_list.append(download_song_clip(url, index, start_time_list[index], end_time_list[index], target_dir))
 
     merged_file = "merged_file_" + datetime.now().strftime("%b-%d-%Y_%H-%M-%S") + ".mp3"
     merged_file = os.path.join(target_dir, merged_file)

@@ -6,7 +6,6 @@
     <div align="center">
             <h1>Welcome to {% block title %}Khurshid's Audio Trimmer{% endblock %}</h1>
     </div>
-<!--
     <form action="/trimAndMerge" method="post">
         <div class="urlDiv">
             <br>
@@ -79,55 +78,12 @@
                         </tr>
                     </table>
 
-        </` h  div>
+        </div>
         <div class="form-group" align="center">
             &nbsp;<br>
             <input type="submit" value="Trim & Merge" class="btn btn-primary">
         </div>
     </form>
--->
-
-    <form action="/trimAndMerge" method="post" id="videoForm">
-        <div class="urlDiv1" id="urlDivTemplate">
-            <table align="center">
-                <tr>
-                    <td align="right">
-                        <label>Video URL:</label>&nbsp;
-                    </td>
-                    <td>
-                        <input type="text" name="url[]"><br><br>
-                    </td>
-                </tr>
-                <tr>
-                    <td align="right">
-                        <label>Start Time:</label>&nbsp;
-                    </td>
-                    <td>
-                        <input type="text" name="start[]" placeholder="MM:SS.mmm"><br><br>
-                    </td>
-                </tr>
-                <tr>
-                    <td align="right">
-                        <label>End Time:</label>&nbsp;
-                    </td>
-                    <td>
-                        <input type="text" name="end[]" placeholder="MM:SS.mmm"><br><br>
-                    </td>
-                </tr>
-            </table>
-        </div>
-
-        <div align="center" id="addBtnWrapper">
-            <button type="button" class="add-btn" onclick="addUrlDiv()">➕ Add One More Video</button>
-        </div>
-        <br>
-        <div class="form-group" align="center">
-            <input type="submit" value="Trim & Merge" class="btn btn-primary">
-        </div>
-    </form>
-
-    <!-- Link to external JS -->
-    <!--    <script src="scripts.js"></script>-->
 
 
 {% endblock %}
