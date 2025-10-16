@@ -1,133 +1,95 @@
 {% extends 'base.html' %}
 
-{% block header_image %} /static/header9.png{% endblock %}
+{% block header_image2 %} /static/header9.png{% endblock %}
 
 {% block content %}
-    <div align="center">
-            <h1>Welcome to {% block title %}Khurshid's Audio Trimmer{% endblock %}</h1>
-    </div>
-<!--
-    <form action="/trimAndMerge" method="post">
-        <div class="urlDiv">
-            <br>
-            <table align="center">
-                <tr>
-                    <td align="right">
-                        <label for="url1">First Video URL:</label>
-                        &nbsp;
-                    </td>
-                    <td>
-                        &nbsp;
-                        <input type="text" id="url1" name="url1"><br><br>
-                    </td>
-                </tr>
-                <tr>
-                    <td align="right">
-                        <label for="url1_start">Start Time (MM:SS.mmm):</label>
-                        &nbsp;
-                    </td>
-                    <td>
-                        &nbsp;
-                        <input type="text" id="url1_start" name="url1_start"><br><br>
-                    </td>
-                </tr>
-                <tr>
-                    <td align="right">
-                        <label for="url1_end">Start Time (MM:SS.mmm):</label>
-                        &nbsp;
-                    </td>
-                    <td>
-                        &nbsp;
-                        <input type="text" id="url1_end" name="url1_end"><br><br>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        &nbsp;
-        <div class="urlDiv">
-            <br>
-                    <table align="center">
-                        <tr>
-                            <td align="right">
-                                <label for="url2">Second Video URL:</label>
-                                &nbsp;
-                            </td>
-                            <td>
-                                &nbsp;
-                                <input type="text" id="url2" name="url2"><br><br>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td align="right">
-                                <label for="url2_start">Start Time (MM:SS.mmm):</label>
-                                &nbsp;
-                            </td>
-                            <td>
-                                &nbsp;
-                                <input type="text" id="url2_start" name="url2_start"><br><br>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td align="right">
-                                <label for="url2_end">Start Time (MM:SS.mmm):</label>
-                                &nbsp;
-                            </td>
-                            <td>
-                                &nbsp;
-                                <input type="text" id="url2_end" name="url2_end"><br><br>
-                            </td>
-                        </tr>
-                    </table>
+    
 
-        </` h  div>
-        <div class="form-group" align="center">
-            &nbsp;<br>
-            <input type="submit" value="Trim & Merge" class="btn btn-primary">
+    <!-- <form action="/trimAndMerge" method="post" id="videoForm"> -->
+    <form method="post" id="videoForm">
+        <div class="title-div">
+            <h1 class="page-title">Welcome to {% block title %}Snip & Snap{% endblock %}</h1>
         </div>
-    </form>
--->
-
-    <form action="/trimAndMerge" method="post" id="videoForm">
         <div class="urlDiv1" id="urlDivTemplate">
-            <table align="center">
+            <table style="width: 100%;">
                 <tr>
-                    <td align="right">
-                        <label>Video URL:</label>&nbsp;
+                    <td style="text-align: right; vertical-align: middle; padding: 2px;">
+                        <label style="color: white;"><i class="fab fa-youtube text-red-600 text-2xl"></i> YouTube URL:</label>&nbsp;
                     </td>
                     <td>
-                        <input type="text" name="url[]"><br><br>
+                        <input type="text" id="url" class="inputURL" placeholder="https://www.youtube.com/watch?v=...">
                     </td>
                 </tr>
-                <tr>
-                    <td align="right">
+                <tr >
+                    <td style="text-align: right; color: white; padding: 5px;">
                         <label>Start Time:</label>&nbsp;
                     </td>
-                    <td>
-                        <input type="text" name="start[]" placeholder="MM:SS.mmm"><br><br>
+                    <td >
+                        <input type="text" id="start" placeholder="HH:MM:SS.mmm" class="inputTime">
                     </td>
                 </tr>
-                <tr>
-                    <td align="right">
+                <tr >
+                    <td style="text-align: right; color: white; padding: 5px;">
                         <label>End Time:</label>&nbsp;
                     </td>
-                    <td>
-                        <input type="text" name="end[]" placeholder="MM:SS.mmm"><br><br>
-                    </td>
+                    <td >
+                        <input type="text" id="end" placeholder="HH:MM:SS.mmm" class="inputTime">
                 </tr>
             </table>
-        </div>
-
-        <div align="center" id="addBtnWrapper">
-            <button type="button" class="add-btn" onclick="addUrlDiv()">➕ Add One More Video</button>
-        </div>
-        <br>
-        <div class="form-group" align="center">
-            <input type="submit" value="Trim & Merge" class="btn btn-primary">
+            <div id="addBtnWrapper">
+                <button id= "addClipButton" type="submit" class="add-btn" >➕ Add Clip</button>
+            </div>
         </div>
     </form>
+        <br>
 
-    <!-- Link to external JS -->
-    <!--    <script src="scripts.js"></script>-->
+        <!-- Videos Carousel -->
+        <div id="videosContainer" class="mb-8">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-semibold text-gray-900 text-white">Your Videos</h2>
+                <button id="submitAllBtn" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-medium transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed" disabled>
+                    <i class="fas fa-music mr-2"></i>Clip & Merge All
+                </button>
+                <div class="flex items-center space-x-2 text-sm text-gray-600 text-white">
+                    <span id="videoCount">0 videos</span>
+                </div>
+            </div>
 
+            <div id="noVideosMessage" class="text-center py-12 bg-white rounded-lg shadow-sm">
+                <i class="fas fa-film text-gray-400 text-4xl mb-4"></i>
+                <p class="text-gray-500">No videos added yet. Add your first video above.</p>
+            </div>
+
+            <div id="carouselWrapper" class="hidden relative">
+                <div class="carousel-container flex overflow-x-auto space-x-6 pb-4 scrollbar-hide" id="carousel">
+                    <!-- Video cards will be dynamically added here -->
+                </div>
+
+                <!-- Navigation Buttons -->
+                <button id="prevBtn" class="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 bg-white shadow-lg rounded-full w-10 h-10 flex items-center justify-center hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-chevron-left text-gray-700"></i>
+                </button>
+                <button id="nextBtn" class="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 bg-white shadow-lg rounded-full w-10 h-10 flex items-center justify-center hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-chevron-right text-gray-700"></i>
+                </button>
+            </div>
+        </div>
+
+        <br>
+        <!-- <div class="form-group">
+            <input type="submit" value="Trim & Merge" class="btn btn-primary">
+            <button id="submitAllBtn" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-medium transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed" disabled>
+                    <i class="fas fa-music mr-2"></i>Clip & Merge All
+            </button>
+        </div> -->
+        
+         <!-- Loader overlay -->
+        <div id="overlay">
+            <div class="spinner"></div>
+            <p style="color:white; margin-top:10px;">Please wait...</p>
+        </div>
+
+    
+    <script src="{{ url_for('static', filename= 'carousel-scripts.js') }}"> </script>
 
 {% endblock %}

@@ -54,10 +54,50 @@ def download_mp3(url_to_download, index, target_dir, clip_start_sec=0.0, clip_en
 
     return mp3_path
 
+def convert_time_to_seconds(time_str: str) -> float:
+    """
+    Converts a time string into total seconds.
+    Supports formats:
+      - HH:MM:SS.mmm
+      - MM:SS.mmm
+      - SS.mmm
+      - HH:MM:SS
+      - MM:SS
+      - SS
+    """
+    if not time_str:
+        return 0.0
+
+    # Split milliseconds (if any)
+    if '.' in time_str:
+        time_part, millis_part = time_str.split('.', 1)
+        milliseconds = int(millis_part.ljust(3, '0'))  # Pad to 3 digits
+    else:
+        time_part, milliseconds = time_str, 0
+
+    # Split hours/minutes/seconds
+    parts = [int(p) for p in time_part.split(':')]
+
+    hours, minutes, seconds = 0, 0, 0
+
+    if len(parts) == 3:
+        hours, minutes, seconds = parts
+    elif len(parts) == 2:
+        minutes, seconds = parts
+    elif len(parts) == 1:
+        seconds = parts[0]
+    else:
+        raise ValueError(f"Invalid time format: {time_str}")
+
+    total_seconds = hours * 3600 + minutes * 60 + seconds + milliseconds / 1000
+    return total_seconds
+
 
 def download_song_clip(url, index, start_time, end_time, target_dir):
-    start_second = float(start_time.split(':')[0]) * 60 + float(start_time.split(':')[1])
-    end_second = float(end_time.split(':')[0]) * 60 + float(end_time.split(':')[1])
+    #start_second = float(start_time.split(':')[0]) * 60 * 60 + float(start_time.split(':')[1]) * 60 + float(start_time.split(':')[2])
+    #end_second = float(end_time.split(':')[0]) * 60 * 60 + float(end_time.split(':')[1]) * 60 + float(end_time.split(':')[2])
+    start_second = convert_time_to_seconds(start_time)
+    end_second = convert_time_to_seconds(end_time)
     print(f'Input audio file <{url}>')
     print(f'Output dir <{target_dir}>')
     print(f'Start Second: {start_second}')

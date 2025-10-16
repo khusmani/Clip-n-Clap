@@ -1,16 +1,16 @@
 import os.path
 
 from markupsafe import escape
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 #from pafy import pafy
 #import youtube_dl
-from pytube import Search
-
+from pytubefix import Search, YouTube
+from flask_fontawesome import FontAwesome
 
 from YoutubeDownload import trim_merge
 
 app = Flask(__name__)
-
+fa = FontAwesome(app)
 
 @app.route("/")
 def hello():
@@ -24,10 +24,17 @@ def search():
     return render_template('search.html', title="Search Video")
 
 
+@app.route('/deepSeek/')
+def test():
+    return render_template('deepSeek.html', title="Test DeepSeek Page")
+
+@app.route('/test-navbar/')
+def test_navbar():
+    return render_template('test-navbar.html', title="Test NavBar Page")
+
 @app.route('/capitalize/<word>/')
 def capitalize(word):
     return '<h1>{}</h1>'.format(escape(word.capitalize()))
-
 
 @app.route('/audioplayer/')
 def audioplayer():
@@ -77,6 +84,7 @@ def trim_and_merge():
 
         # Call trim_merge function
         merged_file = trim_merge(url_list, start_time_list, end_time_list)
+
         merged_file_dir = os.path.dirname(merged_file)
         merged_file_name = os.path.basename(merged_file)
 
@@ -89,18 +97,54 @@ def trim_and_merge():
         merged_file_name=merged_file_name
     )
 
+@app.route('/get_video_info/', methods=['POST'])
+def get_video_info():
+    print(f'get_video_info')
+    data = request.get_json()
+    url = data.get('url', '').strip()
+
+    print(f'get_video_info: url = {url}')
+    if not url:
+        return jsonify({'success': False, 'error': 'No URL provided.'}), 400
+
+    try:
+        yt = YouTube(url)
+        title = yt.title
+        duration_seconds = yt.length
+        minutes, seconds = divmod(duration_seconds, 60)
+        duration = f"{minutes}:{seconds:02}"
+
+        retJson = jsonify({
+            'success': True,
+            'title': title,
+            'duration': duration,
+            'videoId': yt.video_id
+        })
+        print(f"Success fetching video info, JSON: {retJson}")
+
+        return retJson
+    except Exception as e:
+        print(f"Error fetching video info: {e}")
+        return jsonify({
+            'success': False,
+            'error': 'Invalid or inaccessible YouTube URL.'
+        }), 400
+    
 @app.route('/searchResults/', methods=('GET', 'POST'))
 def search_results():
     search_text = request.form['searchText']
     print(f'search_text <{search_text}>')
     search_results = Search(search_text)
-    play_urls = []
-    for i in range(len(search_results.results)):
-        yt = search_results.results[i]
-        url = "https://www.youtube.com/watch?v=87JIOAX3njM" # yt.watch_url
-        #video = pafy.new(url)
-        #play_urls.append(video.getbest().url)
-    return render_template('search_results.html', results=search_results, play_urls=play_urls, search_text=search_text)
+    # play_urls = []
+    # for i in range(len(search_results.results)):
+    #     yt = search_results.results[i]
+    #     url = yt.watch_url #"https://www.youtube.com/watch?v=87JIOAX3njM" # yt.watch_url
+    #     #video = pafy.new(url)
+    #     play_urls.append(url) #video.getbest().url)
+    #     print(f"Title #{i}: {yt.title}")
+    #     print(f"URL#{i}: {yt.watch_url}")
+    #     print("-" * 20)
+    return render_template('search_results.html', results=search_results, search_text=search_text)
 
 
 if __name__ == "__main__":

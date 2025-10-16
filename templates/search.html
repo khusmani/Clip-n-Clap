@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block header_image %} /static/search.png{% endblock %}
+{% block header_image2 %} /static/search.png{% endblock %}
 {% block content %}
 
     <div align="center" >
@@ -8,7 +8,7 @@
         <table>
             <tr align="center">
                 <td align="center" width="50%">
-                    <form class="search" action="/searchResults" method="post">
+                    <form class="search" action="/searchResults" method="post" onsubmit="showLoader()">
                       <input type="text" placeholder="Search.." ID="searchText" name="searchText">
                         <button type="submit"><i class="fa fa-search"></i></button>
                     </form>
@@ -16,5 +16,11 @@
             </tr>
         </table>
       </div>
+
+        <!-- Loader overlay -->
+        <div id="overlay">
+            <div class="spinner"></div>
+            <p style="color:white; margin-top:10px;">Please wait...</p>
+        </div>
 
 {% endblock %}

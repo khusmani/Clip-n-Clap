@@ -1,10 +1,24 @@
-h1{
-	color: darkgreen;
-	font-size: 36px;
+.page-title{
+	color: white;
+	font-size: 35px;
+  font-weight: 600;
+  padding-bottom: 10px;
 }
 
+.title-div{
+  flex-direction: row;
+	color: white;
+	font-size: 17px;
+  font-weight: 600;
+  padding-bottom: 10px;
+}
+
+html,
 body {
-    background: white
+    /* display:grid;
+    height: 100%;
+    place-items: center; */
+    background: #121125;
 }
 
 .myOuterDiv {
@@ -15,18 +29,36 @@ body {
   width: 100%;
 }
 
+.wrapper {
+    width: 380px;
+    background: #121125;
+    border-radius: 17px;
+    text-align: center;
+    padding: 20px 30px;
+    box-shadow: 0px 5px 20px 10px rgba(0, 0, 0, 0.2);
+    color: #fff;
+}
+.wrapper h2 {
+    font-size: 35px;
+    font-weight: 600;
+}
+.wrapper form {
+    margin: 20px 0;
+}
+
 .urlDiv1 {
-  border: 3px outset rgb(0, 0, 0);
-  background-color: lightyellow;
-  text-align: center;
-  align: center;
-  width: 70%;
+  border: 2px outset rgb(167, 243, 185);
+  background-color: black;
+  /* text-align: center; */
+  /* align: center; */
+  width: max(50%, 500px);
   margin-left: auto;
   margin-right: auto;
   padding: 15px;
   margin-bottom: 20px;
   border-radius: 20px;
   position: relative; /* <-- ensures child absolute elements are placed relative to this block */
+  box-shadow: 0px 5px 20px 10px rgba(227, 224, 21, 0.199);
 }
 
 .urlDiv {
@@ -42,12 +74,13 @@ body {
             position: absolute;
             top: 8px;
             right: 8px;
-            background: #eb887d;
+            background: lightyellow;
             color: white;
             border: 1px solid #5b0505;
-            padding: 5px 10px;
+            /* padding: 5px 10px; */
             cursor: pointer;
-            border-radius: 4px;
+            border-radius: 5px;
+            font-size: 8px;
 }
 .remove-btn:hover {
             background: #c0392b;
@@ -73,14 +106,53 @@ figure {
   border: 1px #cccccc solid;
   padding: 4px;
   margin: auto;
+  width: max(50%, 500px);
 }
 
 figcaption {
-  background-color: lightgrey;
+  background-color: rgb(236, 215, 149);
   color: black;
   font-style: italic;
   padding: 2px;
   text-align: left;
+  border: 1px solid #d1db11;
+  border-radius: 10px ;
+  /* width: max(50%, 400px); */
+}
+
+.audio-player {
+  width: 300px;
+  border: 1px solid #c0c0c0;
+  /* background-color: #f0f0f0; */
+  /* border-radius: 10%; */
+  border-width: 2px;
+  border-color: teal;
+  margin: 20px;
+}
+
+.inputTime {
+  /* padding: 10px; */
+  font-size: 14px; 
+  border: 2px solid gray;
+  float: left;
+  width: 50%;
+  background: #f1f1f1;
+}
+
+.inputTime:hover {
+  border: 2px solid yellow;
+}
+
+.inputURL {
+  /* padding: 10px; */
+  font-size: 14px;
+  border: 2px solid gray;
+  float: left;
+  width: 100%;
+  background: #f1f1f1;
+}
+.inputURL:hover {
+  border: 2px solid yellow;
 }
 
 /* Style the search field */
@@ -109,3 +181,80 @@ form.search button {
 form.search button:hover {
     background: #0b7dda;
 }
+
+/* Overlay in the Search page */
+            #overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.6);  /* gray transparent */
+                display: none;                /* hidden by default */
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                z-index: 9999;
+            }
+
+            /* Spinner animation */
+            .spinner {
+                border: 8px solid #f3f3f3;
+                border-top: 8px solid #3498db;
+                border-radius: 50%;
+                width: 60px;
+                height: 60px;
+                animation: spin 1s linear infinite;
+            }
+
+            @keyframes spin {
+                0%   { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+
+.searchResultsDiv {
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            padding: 15px;
+            border-radius: 8px;
+            width: max(80%, 500px);
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+.thumbnail {
+  transition: 0.5s ease;
+  cursor: pointer;
+}
+
+.thumbnail2.hover > :not(:hover) {
+  opacity: 0.3;
+}
+
+.thumbnail:hover {
+  transform: scale(1.1);
+}
+
+    .carousel-container {
+        scroll-behavior: smooth;
+        scroll-snap-type: x mandatory;
+        display:flex;
+        overflow-x: auto;
+        gap: 1.5rem;
+    }
+    .carousel-item {
+        flex: 0 0 auto;
+        scroll-snap-align: start;
+        width: 20rem; 
+        min-height: 10rem;
+    }
+    .time-input:invalid {
+        border-color: #ef4444;
+    }
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }

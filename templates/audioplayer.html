@@ -3,17 +3,17 @@
 {% block content %}
     <div align="center">
         <br>
-        <figure >
+        <div class="urlDiv1" >
             <figcaption>
-                <div align="center">
-                    Listen & Download the merged audio file: <b>{{merged_file_name}}</b>
+                <div style="text-align: center;">
+                    Listen & Download the merged audio file <br> <b>{{merged_file_name}}</b>
                 </div>
             </figcaption>
             <br>
-            <audio controls >
+            <audio controls  style="margin: 20px; ">
                 <source src="/static/working_dir/{{merged_file_name}}" />
                 Your browser does not support the audio tag.
             </audio>
-        </figure>
+        </div>
     </div>
 {% endblock %}

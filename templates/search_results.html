@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block header_image %} /static/search.png{% endblock %}
+{% block header_image2 %} /static/search.png{% endblock %}
 {% block content %}
     <div align="center">
             <h1> {% block title %}Search Results{% endblock %}</h1>
@@ -10,7 +10,7 @@
         <table>
             <tr align="center">
                 <td align="center" width="50%">
-                    <form name="search" class="search" action="/searchResults" method="post">
+                    <form name="search" class="search" action="/searchResults" method="post" onsubmit="showLoader()">
                       <input type="text" placeholder="Search..." ID="searchText" name="searchText">
                         <button type="submit"><i class="fa fa-search"></i></button>
                     </form>
@@ -22,29 +22,40 @@
     <script>
         document.getElementById("searchText").value="{{search_text}}"
     </script>
-    <div class="urlDiv">
+    <div class="searchResultsDiv">
         <br>
         <table align="center">
             {% for yt in results.results %}
                 <tr>
                     <td align="center" width="25%">
-                        <a target="_blank" href="{{yt.watch_url}}"><img src="{{yt.thumbnail_url}}" width="50%"/></a>&nbsp;
+                        
+                            <a target="_blank" href="{{yt.watch_url}}"><img src="{{yt.thumbnail_url}}" width="80%"/></a>&nbsp;
+                        </div>
                         <br><br>
                     </td>
                     <td align="left" valign="center">
                         <a target="_blank" href="{{yt.watch_url}}">{{yt.title}}</a><br>
-                        <!--
-                        <video width="320" height="240" controls>
-                          <source src="https://www.youtube.com/watch?v=87JIOAX3njM" type="video/mp4">
-                          Your browser does not support the video tag.
-                        </video>
-                        -->
+
+                        <br><br>
+                    </td>
+                    <td align="center" valign="center">
+<!--                        <a target="_blank" href="{{yt.watch_url}}"><i class="fa fa-copy"></i>Copy URL</a><br>-->
+                        <button onclick="copyToClipboard('{{yt.watch_url}}', this)" class="btn btn-primary">
+                            <i class="fa fa-copy"></i>Copy
+                        </button>
+                        <div id='copied' class="copied-msg" style="display:none; color:green; font-size:0.9em;">Copied!</div>
                         <br><br>
                     </td>
                 </tr>
             {% endfor %}
         </table>
     </div>
+
+        <!-- Loader overlay -->
+        <div id="overlay">
+            <div class="spinner"></div>
+            <p style="color:white; margin-top:10px;">Please wait...</p>
+        </div>
         &nbsp;
 
 {% endblock %}

@@ -1,0 +1,36 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Dark Nav</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'test-navbar-styles.css') }}">
+    <!-- Font Awesome for the hamburger icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <a href="#" class="logo"> <img src="{{ url_for('static', filename= 'header4.jpg') }}" alt="Logo" height="30px" width="30px"></a>
+        <nav class="nav-links" id="nav-links">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#services">Services</a>
+            <a href="#portfolio">Portfolio</a>
+            <a href="#contact">Contact</a>
+        </nav>
+        <button class="hamburger" id="hamburger">
+            <i class="fas fa-bars"></i>
+        </button>
+    </header>
+
+    <main style="padding-top: 80px; text-align: center;">
+        <h1>Your Page Content Here</h1>
+        <p>Scroll down to see the fixed navigation bar.</p>
+    </main>
+
+    <script src="{{ url_for('static', filename= 'test-navbar-styles.js') }}"></script>
+</body>
+</html>
