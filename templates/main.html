@@ -8,34 +8,82 @@
     <!-- <form action="/trimAndMerge" method="post" id="videoForm"> -->
     <form method="post" id="videoForm">
         <div class="title-div">
-            <h1 class="page-title">Welcome to {% block title %}Snip & Snap{% endblock %}</h1>
+            <h1 class="page-title">Welcome to {% block title %}Clip & Merge{% endblock %}</h1>
         </div>
+        <!-- Scrolling Info Banner -->
+        <div class="scrolling-banner">
+            <div class="scrolling-text" id="scrollingText">
+                🎧 This website gives an easy way to create an audio file by combining clips from one or more YouTube video URLs. 
+            </div>
+            <!-- Make sure type="button" so it doesn't submit the form -->
+            <button id="pauseBtn" class="pause-btn" type="button" aria-pressed="false" title="Pause scrolling">⏸</button>
+        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const scrollingText = document.getElementById("scrollingText");
+                const pauseBtn = document.getElementById("pauseBtn");
+                let isPaused = false;
+
+                pauseBtn.addEventListener("click", (e) => {
+                    // Prevent click from bubbling in case parent handlers exist
+                    e.stopPropagation();
+
+                    isPaused = !isPaused;
+                    scrollingText.style.animationPlayState = isPaused ? "paused" : "running";
+                    pauseBtn.textContent = isPaused ? "▶️" : "⏸";
+                    pauseBtn.setAttribute("aria-pressed", String(isPaused));
+                    pauseBtn.classList.toggle('paused', isPaused);
+                });
+
+                // Also pause on hover
+                document.querySelector('.scrolling-banner').addEventListener('mouseenter', () => {
+                    if (!isPaused) scrollingText.style.animationPlayState = 'paused';
+                });
+                document.querySelector('.scrolling-banner').addEventListener('mouseleave', () => {
+                    if (!isPaused) scrollingText.style.animationPlayState = 'running';
+                });
+            });
+        </script>
         <div class="urlDiv1" id="urlDivTemplate">
             <table style="width: 100%;">
                 <tr>
                     <td style="text-align: right; vertical-align: middle; padding: 2px;">
                         <label style="color: white;"><i class="fab fa-youtube text-red-600 text-2xl"></i> YouTube URL:</label>&nbsp;
+                        <i class="fas fa-question-circle text-blue-400 cursor-pointer" 
+                            onclick="openHelpModal('urlHelp')"></i>
                     </td>
                     <td>
-                        <input type="text" id="url" class="inputURL" placeholder="https://www.youtube.com/watch?v=...">
+                        <input type="text" id="url" class="inputURL" placeholder="https://www.youtube.com/watch?v=..." required>
                     </td>
                 </tr>
                 <tr >
                     <td style="text-align: right; color: white; padding: 5px;">
                         <label>Start Time:</label>&nbsp;
+                        <i class="fas fa-question-circle text-blue-400 cursor-pointer" 
+                            onclick="openHelpModal('startHelp')"></i>
                     </td>
                     <td >
-                        <input type="text" id="start" placeholder="HH:MM:SS.mmm" class="inputTime">
+                        <input type="text" id="start" placeholder="HH:MM:SS.mmm" class="inputTime" required>
                     </td>
                 </tr>
                 <tr >
                     <td style="text-align: right; color: white; padding: 5px;">
                         <label>End Time:</label>&nbsp;
+                        <i class="fas fa-question-circle text-blue-400 cursor-pointer" 
+                            onclick="openHelpModal('endHelp')"></i>
                     </td>
                     <td >
-                        <input type="text" id="end" placeholder="HH:MM:SS.mmm" class="inputTime">
+                        <input type="text" id="end" placeholder="HH:MM:SS.mmm" class="inputTime" required>
                 </tr>
             </table>
+            <!-- User Responsibility Confirmation -->
+            <div class="copyright-confirmation">
+                <label>
+                    <input type="checkbox" id="copyrightConfirm" required>
+                    I confirm that I own or have permission to use the videos I submit.
+                </label>
+            </div>
+
             <div id="addBtnWrapper">
                 <button id= "addClipButton" type="submit" class="add-btn" >➕ Add Clip</button>
             </div>
@@ -87,6 +135,19 @@
         <div id="overlay">
             <div class="spinner"></div>
             <p style="color:white; margin-top:10px;">Please wait...</p>
+        </div>
+
+        <!-- Help Modal -->
+        <div id="helpModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white rounded-lg shadow-lg p-6 w-96 relative">
+                <h2 id="helpTitle" class="text-xl font-semibold mb-2 text-gray-800"></h2>
+                <p id="helpContent" class="text-gray-700" style="justify-content: left; justify-items: left;"></p>
+
+                <button onclick="closeHelpModal()" 
+                        class="absolute top-2 right-3 text-gray-500 hover:text-gray-800">
+                <i class="fas fa-times"></i>
+                </button>
+            </div>
         </div>
 
     

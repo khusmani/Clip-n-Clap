@@ -42,3 +42,44 @@ function copyToClipboard(copyText, btn) {
     });
 }
 
+function openHelpModal(type) {
+    const modal = document.getElementById('helpModal');
+    const title = document.getElementById('helpTitle');
+    const content = document.getElementById('helpContent');
+    const timsHelpContent = `Acceptable formats:  <br>
+                            <ul style="margin-top: 8px;">
+                                <li>✅ HH:MM:SS.mmm</li>
+                                <li>✅ MM:SS.mmm</li>
+                                <li>✅ SS.mmm</li>
+                                <li>✅ HH:MM:SS</li>
+                                <li>✅ MM:SS</li>
+                                <li>✅ SS</li>
+                            </ul>
+                        `;
+
+    const helpText = {
+        urlHelp: {
+            title: 'YouTube URL Help',
+            content: 'Enter a valid YouTube video link, for example:<br><br> <code>https://www.youtube.com/watch?v=dQw4w9WgXcQ</code>'
+        },
+        startHelp: {
+            title: 'Start Time Help',
+            content: 'Specify when the clip should begin. ' + timsHelpContent
+        },
+        endHelp: {
+            title: 'End Time Help',
+            content: 'Specify when the clip should end. ' + timsHelpContent
+        }
+    };
+
+    title.textContent = helpText[type].title;
+    content.innerHTML = helpText[type].content;
+
+    modal.classList.remove('hidden');
+}
+
+function closeHelpModal() {
+    document.getElementById('helpModal').classList.add('hidden');
+}
+
+

@@ -389,10 +389,15 @@
             const url = urlField.value.trim();
             const startTime = startField.value.trim();
             const stopTime = endField.value.trim();
+            const confirmCheckbox = document.getElementById('copyrightConfirm');
 
             if (!url || !startTime || !stopTime) {
                 alert('Please fill in all fields.');
                 return;
+            }
+
+            if (!confirmCheckbox.checked) {
+                alert('Please confirm that you have rights to the videos before proceeding.');
             }
 
             // Validate time format            
