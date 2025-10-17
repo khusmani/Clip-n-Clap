@@ -135,15 +135,6 @@ def search_results():
     search_text = request.form['searchText']
     print(f'search_text <{search_text}>')
     search_results = Search(search_text)
-    # play_urls = []
-    # for i in range(len(search_results.results)):
-    #     yt = search_results.results[i]
-    #     url = yt.watch_url #"https://www.youtube.com/watch?v=87JIOAX3njM" # yt.watch_url
-    #     #video = pafy.new(url)
-    #     play_urls.append(url) #video.getbest().url)
-    #     print(f"Title #{i}: {yt.title}")
-    #     print(f"URL#{i}: {yt.watch_url}")
-    #     print("-" * 20)
     return render_template('search_results.html', results=search_results, search_text=search_text)
 
 

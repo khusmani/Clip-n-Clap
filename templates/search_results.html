@@ -2,7 +2,7 @@
 {% block header_image2 %} /static/search.png{% endblock %}
 {% block content %}
     <div align="center">
-            <h1> {% block title %}Search Results{% endblock %}</h1>
+            <h1 class="page-title"> {% block title %}Search Results{% endblock %}</h1>
     </div>
 
     <div align="center" >
@@ -28,7 +28,7 @@
             {% for yt in results.results %}
                 <tr>
                     <td align="center" width="25%">
-                        
+                        <div class="thumbnail">
                             <a target="_blank" href="{{yt.watch_url}}"><img src="{{yt.thumbnail_url}}" width="80%"/></a>&nbsp;
                         </div>
                         <br><br>
@@ -41,9 +41,9 @@
                     <td align="center" valign="center">
 <!--                        <a target="_blank" href="{{yt.watch_url}}"><i class="fa fa-copy"></i>Copy URL</a><br>-->
                         <button onclick="copyToClipboard('{{yt.watch_url}}', this)" class="btn btn-primary">
-                            <i class="fa fa-copy"></i>Copy
+                            <i class="fa fa-copy"></i><span style="font-size:0.8em;"> Copy</span>
                         </button>
-                        <div id='copied' class="copied-msg" style="display:none; color:green; font-size:0.9em;">Copied!</div>
+                        <div id='copied' class="copied-msg" style="display:none; color:green; font-size:0.8em;">Copied!</div>
                         <br><br>
                     </td>
                 </tr>
