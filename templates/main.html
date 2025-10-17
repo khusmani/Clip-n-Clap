@@ -8,14 +8,14 @@
     <!-- <form action="/trimAndMerge" method="post" id="videoForm"> -->
     <form method="post" id="videoForm">
         <div class="title-div">
-            <h1 class="page-title">Welcome to {% block title %}Clip & Merge{% endblock %}</h1>
+            <h1 class="page-title">{% block title %}Clip & Merge{% endblock %}</h1>
         </div>
         <!-- Scrolling Info Banner -->
         <div class="scrolling-banner">
             <div class="scrolling-text" id="scrollingText">
                 🎧 This website gives an easy way to create an audio file by combining clips from one or more YouTube video URLs. 
             </div>
-            <!-- Make sure type="button" so it doesn't submit the form -->
+            <!-- Pause/Unpause button. Make sure it doesn't submit the form -->
             <button id="pauseBtn" class="pause-btn" type="button" aria-pressed="false" title="Pause scrolling">⏸</button>
         </div>
         <script>

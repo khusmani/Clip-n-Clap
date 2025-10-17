@@ -7,7 +7,6 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-      <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
       <link rel="stylesheet" href="{{ url_for('static', filename= 'test-navbar-styles.css') }}">
       <link rel="stylesheet" href="{{ url_for('static', filename= 'styles.css') }}">
@@ -18,8 +17,21 @@
 
    
     <header class="navbar">
-        <a href="#" class="logo"> 
+        <!-- <a href="#" class="logo"> 
           <img src="{{ url_for('static', filename= 'logo.jpg') }}" alt="Logo" height="30px" width="30px">
+        </a> -->
+        <!-- Cube container -->
+        <a href="https://youtube.com" target="_blank" class="youtube-cube-container">
+          <div class="youtube-cube-container">
+            <div class="cube">
+              <div class="face front"><i class="fab fa-youtube"></i></div>
+              <div class="face back"><i class="fas fa-music"></i></div>
+              <div class="face right"><i class="fas fa-film"></i></div>
+              <div class="face left"><i class="fas fa-music"></i></div>
+              <div class="face bottom"><i class="fas fa-music"></i></div>
+              <div class="face top">🎧</i></div>
+            </div>
+          </div>
         </a>
         <nav class="nav-links" id="nav-links">
             <a href="/">Clip & Merge</a>
