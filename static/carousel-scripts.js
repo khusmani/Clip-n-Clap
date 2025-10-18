@@ -285,7 +285,8 @@
 
 
         // Submit all videos for clipping and merging
-        async function submitAllVideos() {
+        async function submitAllVideos(event) {
+            event.preventDefault();
             if (videos.length === 0) return;
 
             const payload = {
@@ -301,10 +302,6 @@
                 const originalText = submitAllBtn.innerHTML;
                 submitAllBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
                 submitAllBtn.disabled = true;
-
-                // Simulate API call to clipAndMerge endpoint
-                console.log('Submitting videos for clipping and merging:', payload);
-
 
                 // Build FormData to match Flask's expected input
                 const formData = new FormData();
@@ -327,30 +324,54 @@
                     });
 
                     // The Flask route returns HTML (audioplayer.html)
-                    const html = await response.text();
+                    // const html = await response.text();
+                    const data = await response.json();
 
-                    // Replace the <body> content safely
-                    const parser = new DOMParser();
-                    const newDoc = parser.parseFromString(html, 'text/html');
+                    const fileUrl = `/static/working_dir/${data.merged_file_name}`;
 
-                    // Replace current body content
-                    document.body.replaceWith(newDoc.body);
+                    document.getElementById("resultModalBody").innerHTML = `
+                                    <audio id="mergedAudio" class="result-audio" controls>
+                                        <source src="${fileUrl}" type="audio/mpeg" />
+                                        Your browser does not support the audio tag.
+                                    </audio>
+                                    <br>
+                                    <a href="${fileUrl}" download="${data.merged_file_name}">
+                                        <button class="download-btn">
+                                            <i class="fas fa-download"></i> Download
+                                        </button>
+                                    </a>
+                                <!-- </div> -->
+                                `;
+
+                    
+                    //hide the spinner
+                    if (loader) loader.style.display = 'none';
+
+                    //reset the Submit All Button
+                    submitAllBtn.innerHTML = originalText;
+                    submitAllBtn.disabled = false;
+                    
+                    // Show modal
+                    const modal = new bootstrap.Modal(document.getElementById("resultModal"));
+                    modal.show();
+
+                    // Handle modal close events (top and bottom buttons)
+                    const stopAndClose = () => {
+                        const audio = document.getElementById("mergedAudio");
+                        if (audio && !audio.paused) audio.pause();
+                        modal.hide();
+                    };
+
+                    document.getElementById("closeModalBtn").onclick = stopAndClose;
+                    document.getElementById("closeModalFooterBtn").onclick = stopAndClose;
+
+
                 } catch (error) {
                     console.error('Error submitting videos:', error);
-                    alert('Something went wrong. Please try again.');
-                }
-
-                // // Simulate processing delay
-                // setTimeout(() => {
-                //     alert('Successfully submitted ${videos.length} videos for processing! The merged audio will be available shortly.');
-
-                //     // Reset button state
-                //     submitAllBtn.innerHTML = originalText;
-                //     submitAllBtn.disabled = false;
-
-                //     // In a real implementation, you would handle the response
-                //     // and potentially redirect to a download page
-                // }, 2000);
+                    alert('Error merging videos. Please try again.');
+                    submitAllBtn.innerHTML = '<i class="fas fa-music mr-2"></i>Clip & Merge All';
+                    submitAllBtn.disabled = false;
+                } 
 
             } catch (error) {
                 console.error('Error submitting videos:', error);
@@ -360,23 +381,6 @@
             }
         }
 
-        // add Clip button is pressed
-        // function addClip() {
-        //     alert('add clip pressed');
-        //     const urlField = document.getElementById('url');
-        //     const startField = document.getElementById('start');
-        //     const endField = document.getElementById('end');
-        //     const url = urlField.value.trim();
-        //     const startTime = startField.value.trim();
-        //     const stopTime = endField.value.trim();
-
-        //     if (!url || !startTime || !stopTime) {
-        //         alert('Please fill in all fields.');
-        //         return;
-        //     }
-
-        //     addVideo(url, startTime, stopTime);
-        // }
 
         // Event Listeners
         //videoForm.addEventListener('submit', function(e) {

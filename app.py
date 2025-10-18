@@ -91,11 +91,12 @@ def trim_and_merge():
         print(f'merged_file <{merged_file}>')
         print(f'merged_file_dir <{merged_file_dir}>, merged_file_name <{merged_file_name}>')
 
-    return render_template(
-        'audioplayer.html',
-        merged_file_dir=merged_file_dir,
-        merged_file_name=merged_file_name
-    )
+    return jsonify({"merged_file_name": merged_file_name})
+    # return render_template(
+    #     'audioplayer.html',
+    #     merged_file_dir=merged_file_dir,
+    #     merged_file_name=merged_file_name
+    # )
 
 @app.route('/get_video_info/', methods=['POST'])
 def get_video_info():

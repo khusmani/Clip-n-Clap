@@ -150,6 +150,51 @@
             </div>
         </div>
 
+        <!-- Result Modal -->
+        <!-- <div id="resultModal2" class="modal fade hidden" style="border-color: white; border-width: 1px;" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content bg-black text-white border-0 shadow-lg rounded-3">
+                    <div class="modal-header border-0">
+                        <h5 class="modal-title" id="resultModalLabel2">
+                        <i class="fas fa-music text-success"></i> Merged Audio Result
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center" id="resultModalBody2">
+                        <! -- Dynamic content will be injected here -- >
+                    </div>
+                    <div class="modal-footer border-0 justify-content-center">
+                        <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">
+                        Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+
+        <!-- Result Modal -->
+        <div id="resultModal" class="modal fade hidden" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content custom-modal">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="resultModalLabel">
+                        <i class="fas fa-music text-success"></i> Merged Audio Result
+                        </h5>
+                        <!-- Custom visible close button -->
+                        <button type="button" class="custom-close-btn" id="closeModalBtn" aria-label="Close">&times;</button>
+                    </div>
+                    <div class="modal-body text-center justify-content-center" id="resultModalBody">
+                        <!-- Dynamic content will be injected here -->
+                    </div>
+                    <!-- <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-outline-light" id="closeModalFooterBtn">
+                        Close
+                        </button>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+
     
     <script src="{{ url_for('static', filename= 'carousel-scripts.js') }}"> </script>
 
