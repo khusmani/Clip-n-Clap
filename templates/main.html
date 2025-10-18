@@ -18,32 +18,7 @@
             <!-- Pause/Unpause button. Make sure it doesn't submit the form -->
             <button id="pauseBtn" class="pause-btn" type="button" aria-pressed="false" title="Pause scrolling">⏸</button>
         </div>
-        <script>
-            document.addEventListener("DOMContentLoaded", () => {
-                const scrollingText = document.getElementById("scrollingText");
-                const pauseBtn = document.getElementById("pauseBtn");
-                let isPaused = false;
-
-                pauseBtn.addEventListener("click", (e) => {
-                    // Prevent click from bubbling in case parent handlers exist
-                    e.stopPropagation();
-
-                    isPaused = !isPaused;
-                    scrollingText.style.animationPlayState = isPaused ? "paused" : "running";
-                    pauseBtn.textContent = isPaused ? "▶️" : "⏸";
-                    pauseBtn.setAttribute("aria-pressed", String(isPaused));
-                    pauseBtn.classList.toggle('paused', isPaused);
-                });
-
-                // Also pause on hover
-                document.querySelector('.scrolling-banner').addEventListener('mouseenter', () => {
-                    if (!isPaused) scrollingText.style.animationPlayState = 'paused';
-                });
-                document.querySelector('.scrolling-banner').addEventListener('mouseleave', () => {
-                    if (!isPaused) scrollingText.style.animationPlayState = 'running';
-                });
-            });
-        </script>
+        
         <div class="urlDiv1" id="urlDivTemplate">
             <table style="width: 100%;">
                 <tr>
@@ -136,41 +111,6 @@
             <div class="spinner"></div>
             <p style="color:white; margin-top:10px;">Please wait...</p>
         </div>
-
-        <!-- Help Modal -->
-        <div id="helpModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div class="bg-white rounded-lg shadow-lg p-6 w-96 relative">
-                <h2 id="helpTitle" class="text-xl font-semibold mb-2 text-gray-800"></h2>
-                <p id="helpContent" class="text-gray-700" style="justify-content: left; justify-items: left;"></p>
-
-                <button onclick="closeHelpModal()" 
-                        class="absolute top-2 right-3 text-gray-500 hover:text-gray-800">
-                <i class="fas fa-times"></i>
-                </button>
-            </div>
-        </div>
-
-        <!-- Result Modal -->
-        <!-- <div id="resultModal2" class="modal fade hidden" style="border-color: white; border-width: 1px;" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content bg-black text-white border-0 shadow-lg rounded-3">
-                    <div class="modal-header border-0">
-                        <h5 class="modal-title" id="resultModalLabel2">
-                        <i class="fas fa-music text-success"></i> Merged Audio Result
-                        </h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body text-center" id="resultModalBody2">
-                        <! -- Dynamic content will be injected here -- >
-                    </div>
-                    <div class="modal-footer border-0 justify-content-center">
-                        <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">
-                        Close
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div> -->
 
         <!-- Result Modal -->
         <div id="resultModal" class="modal fade hidden" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">

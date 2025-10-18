@@ -1,6 +1,9 @@
         // Data storage
         let videos = [];
         let currentVideoIndex = 0;
+        let isBanneScrollingPaused = false;
+        let merged_file_name = "";
+        let resultModalInstance = null;
 
         // DOM Elements
         const videoForm = document.getElementById('videoForm');
@@ -15,6 +18,11 @@
         const nextBtn = document.getElementById('nextBtn');
         const submitAllBtn = document.getElementById('submitAllBtn');
         const videoCount = document.getElementById('videoCount');
+        const resultModal = document.getElementById('resultModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        // const closeModalFooterBtn = document.getElementById('closeModalFooterBtn');
+        const scrollingText = document.getElementById("scrollingText");
+        const pauseBtn = document.getElementById("pauseBtn");
 
         // Mock video data for demonstration
         const mockVideoData = [
@@ -145,17 +153,6 @@
             }
         }
 
-        // Add new video
-        function addVideoWithInput() {
-            alert('in addVideoWithInput');
-            var url = document.getElementById("url").value;
-            var startTime = document.getElementById("start").value;;
-            var stopTime = document.getElementById("end").value;
-            alert('adding ' + url);
-            console.log("adding " + url + " to the video list");
-            addVideo(url, startTime, stopTime);
-        }
-
         async function addVideo(url, startTime, stopTime, data) {
             console.log("add video " + url);
             const videoId = data.videoId; //extractVideoId(url);
@@ -220,16 +217,6 @@
         }
 
         // Convert HH:MM:SS.mmm to seconds
-        // function convertTimeToSeconds(timeString) {
-        //     const parts = timeString.split(':');
-        //     const hours = parseInt(parts[0]) || 0;
-        //     const minutes = parseInt(parts[1]) || 0;
-        //     const secondsParts = parts[2].split('.');
-        //     const seconds = parseInt(secondsParts[0]) || 0;
-        //     const milliseconds = parseInt(secondsParts[1]) || 0;
-
-        //     return hours * 3600 + minutes * 60 + seconds + milliseconds / 1000;
-        // }
         function convertTimeToSeconds(timeString) {
             if (!timeString) return 0;
 
@@ -327,6 +314,9 @@
                     // const html = await response.text();
                     const data = await response.json();
 
+                    //save it as it will be needed for deletion on close.
+                    merged_file_name = data.merged_file_name;
+
                     const fileUrl = `/static/working_dir/${data.merged_file_name}`;
 
                     document.getElementById("resultModalBody").innerHTML = `
@@ -352,18 +342,8 @@
                     submitAllBtn.disabled = false;
                     
                     // Show modal
-                    const modal = new bootstrap.Modal(document.getElementById("resultModal"));
-                    modal.show();
-
-                    // Handle modal close events (top and bottom buttons)
-                    const stopAndClose = () => {
-                        const audio = document.getElementById("mergedAudio");
-                        if (audio && !audio.paused) audio.pause();
-                        modal.hide();
-                    };
-
-                    document.getElementById("closeModalBtn").onclick = stopAndClose;
-                    document.getElementById("closeModalFooterBtn").onclick = stopAndClose;
+                    resultModalInstance = new bootstrap.Modal(document.getElementById("resultModal"));
+                    resultModalInstance.show();
 
 
                 } catch (error) {
@@ -382,64 +362,178 @@
         }
 
 
+        //add all the event listeners
+        document.addEventListener("DOMContentLoaded", () => {
+            addBannerScrollPauseEventListener();
+            addVideoFormSubmitEventListener();
+            addCarouselEventListener();
+            submitAllBtn.addEventListener('click', submitAllVideos);
+            addResultModalCloseEventListener();
+        });
+
+        function addResultModalCloseEventListener() {
+            
+            // Stop audio and hide modal on close button click
+            function closeModal() {
+                // Remove focus first (fixes aria-hidden warning)
+                document.activeElement.blur();
+
+                const audio = document.getElementById("mergedAudio"); //document.querySelector('#resultModalBody audio');
+                if (audio) {
+                    audio.pause();
+                    audio.currentTime = 0;
+                }
+
+                // const modalInstance = bootstrap.Modal.getInstance(document.getElementById("resultModal"));
+                // if (!modalInstance) {
+                //    modalInstance = new bootstrap.Modal(resultModal);
+                // }
+                // modalInstance.hide();
+                resultModalInstance.hide();
+
+                // Hide modal using Bootstrap 4 jQuery API
+                //$('#resultModal').modal('hide');
+
+                //delete the merged file on the server
+                deleteMergedFile();
+
+            }
+
+            closeModalBtn.addEventListener('click', closeModal);
+
+            // Listen for *any* modal close event, including clicking outside or pressing ESC
+            //$('#resultModal').on('hidden.bs.modal', async function () {
+            resultModal.addEventListener('hidden.bs.modal', deleteMergedFile);
+        }
+
+        async function deleteMergedFile () {
+            console.log(`Result Modal closed. deleting merged file name ${merged_file_name}`);
+
+            // --- Warning box setup ---    
+            const warningBox = document.createElement('div');
+            warningBox.id = 'deleteWarningBox';
+            warningBox.style.display = 'none';
+            warningBox.style.color = 'yellow';
+            warningBox.style.textAlign = 'center';
+            warningBox.style.marginTop = '10px';
+            document.body.appendChild(warningBox);
+
+            function showWarning(msg) {
+                warningBox.textContent = msg;
+                warningBox.style.display = 'block';
+                setTimeout(() => warningBox.style.display = 'none', 4000);
+            }
+
+            // Get the filename from the modal (if stored in a data attribute)
+            const mergedFileName = merged_file_name; //resultModal.dataset.filename;
+            if (mergedFileName) {
+                try {
+                    // Call backend to delete the temp audio file
+                    const response = await fetch(`/deleteMergedFile?filename=${encodeURIComponent(mergedFileName)}`, 
+                                                { method: 'DELETE', });
+                    const data = await response.json();
+
+                    if (!response.ok || data.status !== "success") {
+                        console.warn("⚠️ Delete file warning:", data.message);
+                        showWarning(data.message);
+                    } else {
+                        console.log("✅ File deleted:", data.message);
+                    }
+                } catch (error) {
+                    console.error("❌ Error deleting file:", error);
+                    showWarning("Error contacting server to delete file.");
+                }
+            } else {
+                console.error("❌ Merged File Name is blank");
+                showWarning("Merged File Name is blank");
+            }
+        }
+
+
+        function addBannerScrollPauseEventListener() {
+            pauseBtn.addEventListener("click", (e) => {
+                // Prevent click from bubbling in case parent handlers exist
+                e.stopPropagation();
+
+                isBanneScrollingPaused = !isBanneScrollingPaused;
+                scrollingText.style.animationPlayState = isBanneScrollingPaused ? "paused" : "running";
+                pauseBtn.textContent = isBanneScrollingPaused ? "▶️" : "⏸";
+                pauseBtn.setAttribute("aria-pressed", String(isBanneScrollingPaused));
+                pauseBtn.classList.toggle('paused', isBanneScrollingPaused);
+            });
+
+            // Also pause on hover
+            document.querySelector('.scrolling-banner').addEventListener('mouseenter', () => {
+                if (!isBanneScrollingPaused) scrollingText.style.animationPlayState = 'paused';
+            });
+            document.querySelector('.scrolling-banner').addEventListener('mouseleave', () => {
+                if (!isBanneScrollingPaused) scrollingText.style.animationPlayState = 'running';
+            });
+        };
+
         // Event Listeners
-        //videoForm.addEventListener('submit', function(e) {
-        videoForm.addEventListener('submit', function(e) {
-            e.preventDefault(); // prevent normal form submission
-            //alert('submit button pressed');
-            const urlField = document.getElementById('url');
-            const startField = document.getElementById('start');
-            const endField = document.getElementById('end');
-            const url = urlField.value.trim();
-            const startTime = startField.value.trim();
-            const stopTime = endField.value.trim();
-            const confirmCheckbox = document.getElementById('copyrightConfirm');
+        function addVideoFormSubmitEventListener() {
+            videoForm.addEventListener('submit', function(e) {
+                e.preventDefault(); // prevent normal form submission
+                //alert('submit button pressed');
+                const urlField = document.getElementById('url');
+                const startField = document.getElementById('start');
+                const endField = document.getElementById('end');
+                const url = urlField.value.trim();
+                const startTime = startField.value.trim();
+                const stopTime = endField.value.trim();
+                const confirmCheckbox = document.getElementById('copyrightConfirm');
 
-            if (!url || !startTime || !stopTime) {
-                alert('Please fill in all fields.');
-                return;
-            }
+                if (!url || !startTime || !stopTime) {
+                    alert('Please fill in all fields.');
+                    return;
+                }
 
-            if (!confirmCheckbox.checked) {
-                alert('Please confirm that you have rights to the videos before proceeding.');
-            }
+                if (!confirmCheckbox.checked) {
+                    alert('Please confirm that you have rights to the videos before proceeding.');
+                }
 
-            // Validate time format            
-            // Accepts: HH:MM:SS.mmm | MM:SS.mmm | SS.mmm | HH:MM:SS | MM:SS | SS
-            const timePattern = /^(\d{1,2}:)?([0-5]?\d:)?([0-5]?\d)(\.\d{1,3})?$/;
-            if (!timePattern.test(startTime) || !timePattern.test(stopTime)) {
-                alert('Invalid time format. Please use HH:MM:SS.mmm, MM:SS.mmm, SS.mmm, HH:MM:SS, MM:SS, or SS format.');
-                return;
-            }
+                // Validate time format            
+                // Accepts: HH:MM:SS.mmm | MM:SS.mmm | SS.mmm | HH:MM:SS | MM:SS | SS
+                const timePattern = /^(\d{1,2}:)?([0-5]?\d:)?([0-5]?\d)(\.\d{1,3})?$/;
+                if (!timePattern.test(startTime) || !timePattern.test(stopTime)) {
+                    alert('Invalid time format. Please use HH:MM:SS.mmm, MM:SS.mmm, SS.mmm, HH:MM:SS, MM:SS, or SS format.');
+                    return;
+                }
 
-            //addVideo(url, startTime, stopTime);
-            fetchVideoInfo(url, startTime, stopTime);
-        });
+                //addVideo(url, startTime, stopTime);
+                fetchVideoInfo(url, startTime, stopTime);
+            });
+        }
+        
+        function addCarouselEventListener() {
+            prevBtn.addEventListener('click', function() {
+                if (currentVideoIndex > 0) {
+                    scrollToVideo(currentVideoIndex - 1);
+                }
+            });
 
-        prevBtn.addEventListener('click', function() {
-            if (currentVideoIndex > 0) {
-                scrollToVideo(currentVideoIndex - 1);
-            }
-        });
+            nextBtn.addEventListener('click', function() {
+                if (currentVideoIndex < videos.length - 1) {
+                    scrollToVideo(currentVideoIndex + 1);
+                }
+            });
 
-        nextBtn.addEventListener('click', function() {
-            if (currentVideoIndex < videos.length - 1) {
-                scrollToVideo(currentVideoIndex + 1);
-            }
-        });
+            // Carousel scroll event to update current index
+            carousel.addEventListener('scroll', function() {
+                const scrollLeft = carousel.scrollLeft;
+                const itemWidth = 320; // w-80 = 320px
+                const newIndex = Math.round(scrollLeft / itemWidth);
+                if (newIndex !== currentVideoIndex && newIndex >= 0 && newIndex < videos.length) {
+                    currentVideoIndex = newIndex;
+                    updateNavigationButtons();
+                }
+            });
+        }
 
-        submitAllBtn.addEventListener('click', submitAllVideos);
+        
 
-        // Carousel scroll event to update current index
-        carousel.addEventListener('scroll', function() {
-            const scrollLeft = carousel.scrollLeft;
-            const itemWidth = 320; // w-80 = 320px
-            const newIndex = Math.round(scrollLeft / itemWidth);
-            if (newIndex !== currentVideoIndex && newIndex >= 0 && newIndex < videos.length) {
-                currentVideoIndex = newIndex;
-                updateNavigationButtons();
-            }
-        });
+       
 
         //function to fetch video info
         async function fetchVideoInfo(videoUrl, startTime, stopTime) {

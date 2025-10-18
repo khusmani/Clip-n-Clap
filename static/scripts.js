@@ -69,6 +69,32 @@ function openHelpModal(type) {
         endHelp: {
             title: 'End Time Help',
             content: 'Specify when the clip should end. ' + timsHelpContent
+        },
+        about: {
+            title: 'About',
+            content: `<div style = "text-align: left;"> 
+                      This website was written simply as a learning exercise. 
+                      Some of the functionalities and widgets were added only for the purpose of gaining more knowledge. 
+                      Intent was to learn the following technologies in the process. 
+                      </div>
+                      <ul style="margin-top: 8px;">
+                                <li>✅ Python </li>
+                                <li>✅ Flask </li>
+                                <li>✅ CSS </li>
+                                <li>✅ JavaScript </li>
+                            </ul>
+                      `
+        },
+        contact: {
+            title: 'Contact',
+            content: `<div style = "text-align: left;"> 
+                        All comments and feedback are welcome. Please email me at 
+                        <a href="mailto:'Khurshid Usmani' <amazohaas@gmail.com>?subject=Clip%20%26%20Merge%20Feedback" target="_top" style="color: blue; text-decoration: underline;">
+                            <code>Khurshid Usmani</code>
+                        </a>
+                      </div>
+                      
+                      `
         }
     };
 

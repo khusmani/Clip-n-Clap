@@ -1,5 +1,6 @@
 # importing packages
-from datetime import datetime
+from datetime import datetime, timedelta
+import random
 from moviepy.audio.AudioClip import concatenate_audioclips
 from moviepy.audio.io.AudioFileClip import AudioFileClip
 from pytubefix import YouTube
@@ -112,7 +113,8 @@ def trim_merge(url_list, start_time_list, end_time_list):
     for index, url in enumerate(url_list):
         mp3_list.append(download_song_clip(url, index, start_time_list[index], end_time_list[index], target_dir))
 
-    merged_file = "merged_file_" + datetime.now().strftime("%b-%d-%Y_%H-%M-%S") + ".mp3"
+    random_code = str(random.randint(123456, 999999))
+    merged_file = "merged_file_" + datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + "_" + random_code  + ".mp3"
     merged_file = os.path.join(target_dir, merged_file)
     print(f'merged file name <{merged_file}>')
     audio_clips = [AudioFileClip(c) for c in mp3_list]
@@ -125,5 +127,21 @@ def trim_merge(url_list, start_time_list, end_time_list):
     print(f'output file <{merged_file}> created')
     return merged_file
 
+def delete_old_merged_files(directory="static/working_dir"):
+    now = datetime.now()
+    cutoff_time = now - timedelta(hours=1) #one hour before now
 
+    for filename in os.listdir(directory):
+        if filename.startswith("merged_file_") and filename.endswith(".mp3"):
+            filepath = os.path.join(directory, filename)
+            try:
+                # Get the file modification time
+                file_mtime = datetime.fromtimestamp(os.path.getmtime(filepath))
+                
+                # Delete if older than 1 hour
+                if file_mtime < cutoff_time:
+                    os.remove(filepath)
+                    print(f"Deleted old file: {filename}")
+            except Exception as e:
+                print(f"Error deleting {filename}: {e}")
 

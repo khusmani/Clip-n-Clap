@@ -7,7 +7,7 @@ from flask import Flask, render_template, request, jsonify
 from pytubefix import Search, YouTube
 from flask_fontawesome import FontAwesome
 
-from YoutubeDownload import trim_merge
+from YoutubeDownload import trim_merge, delete_old_merged_files
 
 app = Flask(__name__)
 fa = FontAwesome(app)
@@ -91,6 +91,8 @@ def trim_and_merge():
         print(f'merged_file <{merged_file}>')
         print(f'merged_file_dir <{merged_file_dir}>, merged_file_name <{merged_file_name}>')
 
+        delete_old_merged_files() #delete all the old files (older than 1 hour)
+
     return jsonify({"merged_file_name": merged_file_name})
     # return render_template(
     #     'audioplayer.html',
@@ -137,6 +139,28 @@ def search_results():
     print(f'search_text <{search_text}>')
     search_results = Search(search_text)
     return render_template('search_results.html', results=search_results, search_text=search_text)
+
+@app.route('/deleteMergedFile', methods=['DELETE'])
+def delete_merged_file():
+    filename = request.args.get('filename')
+    if not filename:
+        return jsonify({"status": "error", "message": "Missing filename"}), 400
+
+    file_path = os.path.join('static', 'working_dir', filename)
+    if os.path.exists(file_path):
+        try:
+            os.remove(file_path)
+            print(f"✅ Deleted temporary file: {file_path}")
+
+            delete_old_merged_files() #delete all the old files (older than 1 hour)
+            
+            return jsonify({"status": "success", "message": f"Deleted file: {filename}"}), 200
+        except Exception as e:
+            print(f"❌ Error deleting file: {e}")
+            return jsonify({"status": "error", "message": f"Error deleting file: {str(e)}"}), 500
+    else:
+        print(f"⚠️ File not found: {file_path}")
+        return jsonify({"status": "warning", "message": f"File not found: {filename}"}), 404
 
 
 if __name__ == "__main__":
