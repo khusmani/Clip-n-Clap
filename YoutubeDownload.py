@@ -30,19 +30,23 @@ def download_mp4(yt, destination):
 
 
 def get_thumbnail_url(url):
-    yt = YouTube(url, 
-        use_po_token=True,
-        po_token=os.getenv("YT_PO_TOKEN", poToken),
-        visitor_data=os.getenv("YT_VISITOR_DATA", visitorData))
+    yt = YouTube(url, 'WEB')
+        # use_po_token=True,
+        # config={
+        #         "po_token": os.getenv("YT_PO_TOKEN", poToken),
+        #         "visitor_data": os.getenv("YT_VISITOR_DATA", visitorData)
+        #     })
     return yt.thumbnail_url
 
 
 def download_mp3(url_to_download, index, target_dir, clip_start_sec=0.0, clip_end_sec=None):
     # download the MP4 video
-    yt = YouTube(url_to_download,
-        use_po_token=True,
-        po_token=os.getenv("YT_PO_TOKEN", poToken),
-        visitor_data=os.getenv("YT_VISITOR_DATA", visitorData)) 
+    yt = YouTube(url_to_download, 'WEB')
+        # use_po_token=True,
+        # config={
+        #         "po_token": os.getenv("YT_PO_TOKEN", poToken),
+        #         "visitor_data": os.getenv("YT_VISITOR_DATA", visitorData)
+        #     })
     mp4_file = download_mp4(yt, target_dir)
 
     # convert MP4 to MP3

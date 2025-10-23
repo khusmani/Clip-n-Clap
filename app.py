@@ -111,10 +111,12 @@ def get_video_info():
         return jsonify({'success': False, 'error': 'No URL provided.'}), 400
 
     try:
-        yt = YouTube(url, 
-                use_po_token=True,
-                po_token=os.getenv("YT_PO_TOKEN", poToken),
-                visitor_data=os.getenv("YT_VISITOR_DATA", visitorData))
+        yt = YouTube(url, 'WEB')
+                # use_po_token=True,
+                # config={
+                #         "po_token": os.getenv("YT_PO_TOKEN", poToken),
+                #         "visitor_data": os.getenv("YT_VISITOR_DATA", visitorData)
+                #     })
         title = yt.title
         duration_seconds = yt.length
         minutes, seconds = divmod(duration_seconds, 60)
@@ -140,10 +142,12 @@ def get_video_info():
 def search_results():
     search_text = request.form['searchText']
     print(f'search_text <{search_text}>')
-    search_results = Search(search_text, 
-                            use_po_token=True,
-                            po_token=os.getenv("YT_PO_TOKEN", poToken),
-                            visitor_data=os.getenv("YT_VISITOR_DATA", visitorData))
+    search_results = Search(search_text, 'WEB')
+                            # use_po_token=True,
+                            # config={
+                            #         "po_token": os.getenv("YT_PO_TOKEN", poToken),
+                            #         "visitor_data": os.getenv("YT_VISITOR_DATA", visitorData)
+                            #     })
     return render_template('search_results.html', results=search_results, search_text=search_text)
 
 @app.route('/deleteMergedFile', methods=['DELETE'])
