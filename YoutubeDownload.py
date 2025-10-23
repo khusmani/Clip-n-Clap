@@ -27,13 +27,13 @@ def download_mp4(yt, destination):
 
 
 def get_thumbnail_url(url):
-    yt = YouTube(url)
+    yt = YouTube(url, use_po_token=True)
     return yt.thumbnail_url
 
 
 def download_mp3(url_to_download, index, target_dir, clip_start_sec=0.0, clip_end_sec=None):
     # download the MP4 video
-    yt = YouTube(url_to_download)
+    yt = YouTube(url_to_download, use_po_token=True)
     mp4_file = download_mp4(yt, target_dir)
 
     # convert MP4 to MP3
