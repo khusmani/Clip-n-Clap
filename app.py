@@ -111,7 +111,7 @@ def get_video_info():
         return jsonify({'success': False, 'error': 'No URL provided.'}), 400
 
     try:
-        yt = YouTube(url, use_po_token=True)
+        yt = YouTube(url, client='WEB') # use_po_token=True)
         title = yt.title
         duration_seconds = yt.length
         minutes, seconds = divmod(duration_seconds, 60)
@@ -137,7 +137,7 @@ def get_video_info():
 def search_results():
     search_text = request.form['searchText']
     print(f'search_text <{search_text}>')
-    search_results = Search(search_text, use_po_token=True)
+    search_results = Search(search_text, client='WEB') # use_po_token=True)
     return render_template('search_results.html', results=search_results, search_text=search_text)
 
 @app.route('/deleteMergedFile', methods=['DELETE'])
