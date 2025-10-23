@@ -7,6 +7,9 @@ from pytubefix import YouTube
 import os
 from moviepy.video.io.VideoFileClip import VideoFileClip
 
+visitorData = "Cgtob0VnMlh2cEhMUSj8lerHBjIKCgJVUxIEGgAgVQ%3D%3D"
+poToken = "MngDK0MhEfMhnwMXlQqgGVALGF6_Bz1SyUDf94FHevBmALJwYf6N-A6P0I8EzP0FzAkVN-3nNmGD2IxQJZhGKtpOWpoQJgmDKN_eV4vqDtyEWfkHtas3eVDyNSMlFGDXrvk9ADdSvFGj6IP8bl6yjDaXRxracNdrJ_A="
+
 
 def convert_mp4_to_mp3(input_file, output_file, clip_start_sec=0.0, clip_end_sec=None):
     print(f'clip_start_sec <{clip_start_sec}>, clip_end_sec <{clip_end_sec}>')
@@ -27,13 +30,19 @@ def download_mp4(yt, destination):
 
 
 def get_thumbnail_url(url):
-    yt = YouTube(url, client='WEB') # use_po_token=True)
+    yt = YouTube(url, 
+        use_po_token=True,
+        po_token=os.getenv("YT_PO_TOKEN", poToken),
+        visitor_data=os.getenv("YT_VISITOR_DATA", visitorData))
     return yt.thumbnail_url
 
 
 def download_mp3(url_to_download, index, target_dir, clip_start_sec=0.0, clip_end_sec=None):
     # download the MP4 video
-    yt = YouTube(url_to_download, client='WEB') #use_po_token=True)
+    yt = YouTube(url_to_download,
+        use_po_token=True,
+        po_token=os.getenv("YT_PO_TOKEN", poToken),
+        visitor_data=os.getenv("YT_VISITOR_DATA", visitorData)) 
     mp4_file = download_mp4(yt, target_dir)
 
     # convert MP4 to MP3
