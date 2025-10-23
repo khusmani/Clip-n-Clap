@@ -13,12 +13,11 @@
         <!-- Scrolling Info Banner -->
         <div class="scrolling-banner">
             <div class="scrolling-text" id="scrollingText">
-                🎧 This website gives an easy way to create an audio file by combining clips from one or more YouTube video URLs. 
+                🎧 Create an audio file by combining clips from one or more YouTube video URLs. 
             </div>
             <!-- Pause/Unpause button. Make sure it doesn't submit the form -->
             <button id="pauseBtn" class="pause-btn" type="button" aria-pressed="false" title="Pause scrolling">⏸</button>
         </div>
-        
         <div class="urlDiv1" id="urlDivTemplate">
             <table style="width: 100%;">
                 <tr>
@@ -38,7 +37,7 @@
                             onclick="openHelpModal('startHelp')"></i>
                     </td>
                     <td >
-                        <input type="text" id="start" placeholder="HH:MM:SS.mmm" class="inputTime" required>
+                        <input type="text" id="start" class="inputTime" required>
                     </td>
                 </tr>
                 <tr >
@@ -48,7 +47,7 @@
                             onclick="openHelpModal('endHelp')"></i>
                     </td>
                     <td >
-                        <input type="text" id="end" placeholder="HH:MM:SS.mmm" class="inputTime" required>
+                        <input type="text" id="end" class="inputTime" required>
                 </tr>
             </table>
             <!-- User Responsibility Confirmation -->

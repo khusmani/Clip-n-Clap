@@ -3,6 +3,7 @@
     --light-text: #ecf0f1;
     --accent-color: #3498db;
     --hover-bg: #34495e;
+    --light-bg: #3ac1ad;
 }
 
 body {
@@ -78,7 +79,7 @@ body {
 }
 
 .nav-links a:hover {
-    color: var(--accent-color);
+    color: var(--light-bg);
 }
 
 .hamburger {
