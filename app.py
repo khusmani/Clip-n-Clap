@@ -111,7 +111,7 @@ def get_video_info():
         return jsonify({'success': False, 'error': 'No URL provided.'}), 400
 
     try:
-        yt = YouTube(url, 'WEB')
+        yt = YouTube(url)#, 'WEB')
                 # use_po_token=True,
                 # config={
                 #         "po_token": os.getenv("YT_PO_TOKEN", poToken),
@@ -142,7 +142,7 @@ def get_video_info():
 def search_results():
     search_text = request.form['searchText']
     print(f'search_text <{search_text}>')
-    search_results = Search(search_text, 'WEB')
+    search_results = Search(search_text) #, 'WEB')
                             # use_po_token=True,
                             # config={
                             #         "po_token": os.getenv("YT_PO_TOKEN", poToken),

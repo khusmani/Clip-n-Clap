@@ -30,7 +30,7 @@ def download_mp4(yt, destination):
 
 
 def get_thumbnail_url(url):
-    yt = YouTube(url, 'WEB')
+    yt = YouTube(url)#, 'WEB')
         # use_po_token=True,
         # config={
         #         "po_token": os.getenv("YT_PO_TOKEN", poToken),
@@ -41,7 +41,7 @@ def get_thumbnail_url(url):
 
 def download_mp3(url_to_download, index, target_dir, clip_start_sec=0.0, clip_end_sec=None):
     # download the MP4 video
-    yt = YouTube(url_to_download, 'WEB')
+    yt = YouTube(url_to_download)#, 'WEB')
         # use_po_token=True,
         # config={
         #         "po_token": os.getenv("YT_PO_TOKEN", poToken),
