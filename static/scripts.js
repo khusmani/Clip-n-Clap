@@ -46,7 +46,7 @@ function openHelpModal(type) {
     const modal = document.getElementById('helpModal');
     const title = document.getElementById('helpTitle');
     const content = document.getElementById('helpContent');
-    const timsHelpContent = `Acceptable formats:  <br>
+    const timeHelpContent = `Acceptable formats:  <br>
                             <ul style="margin-top: 8px;">
                                 <li>✅ HH:MM:SS.mmm</li>
                                 <li>✅ MM:SS.mmm</li>
@@ -64,11 +64,11 @@ function openHelpModal(type) {
         },
         startHelp: {
             title: 'Start Time Help',
-            content: 'Specify when the clip should begin. ' + timsHelpContent
+            content: 'Specify when the clip should begin. ' + timeHelpContent
         },
         endHelp: {
             title: 'End Time Help',
-            content: 'Specify when the clip should end. ' + timsHelpContent
+            content: 'Specify when the clip should end. ' + timeHelpContent
         },
         about: {
             title: 'About',
@@ -82,8 +82,14 @@ function openHelpModal(type) {
                                 <li>✅ Flask </li>
                                 <li>✅ CSS </li>
                                 <li>✅ JavaScript </li>
-                            </ul>
-                      `
+                      </ul>
+                      <div style = "text-align: left;"> 
+                      All comments and feedback are welcome. Please email me at 
+                        <a href="mailto:'Khurshid Usmani' <amazohaas@gmail.com>?subject=Clip%20%26%20Merge%20Feedback" target="_top" style="color: blue; text-decoration: underline;">
+                            <code>Khurshid Usmani</code>
+                        </a>
+                      </div>
+                    `
         },
         contact: {
             title: 'Contact',

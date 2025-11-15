@@ -13,7 +13,7 @@
         <!-- Scrolling Info Banner -->
         <div class="scrolling-banner">
             <div class="scrolling-text" id="scrollingText">
-                🎧 Create an audio file by combining clips from one or more YouTube video URLs. 
+                🎧 Create an audio file by combining clips from one or more of your YouTube video URLs. 
             </div>
             <!-- Pause/Unpause button. Make sure it doesn't submit the form -->
             <button id="pauseBtn" class="pause-btn" type="button" aria-pressed="false" title="Pause scrolling">⏸</button>
@@ -112,7 +112,10 @@
         </div>
 
         <!-- Result Modal -->
-        <div id="resultModal" class="modal fade hidden" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
+        <div id="resultModal" class="modal fade hidden" 
+             tabindex="-1" aria-labelledby="resultModalLabel" 
+             aria-hidden="true" data-bs-backdrop="static"
+             data-bs-keyboard="false">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content custom-modal">
                     <div class="modal-header">
@@ -120,7 +123,9 @@
                         <i class="fas fa-music text-success"></i> Merged Audio Result
                         </h5>
                         <!-- Custom visible close button -->
-                        <button type="button" class="custom-close-btn" id="closeModalBtn" aria-label="Close">&times;</button>
+                        <button type="button" class="custom-close-btn" id="closeModalBtn" aria-label="Close">
+                            &times;
+                        </button>
                     </div>
                     <div class="modal-body text-center justify-content-center" id="resultModalBody">
                         <!-- Dynamic content will be injected here -->
@@ -130,10 +135,32 @@
                         Close
                         </button>
                     </div> -->
+                    
                 </div>
             </div>
         </div>
-
+        
+        <div id="resultModal2" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div class="bg-white rounded-lg shadow-lg p-6 w-96 relative">
+                    <div class="modal-header2">
+                        <h5 class="modal-title2" id="resultModalLabel">
+                        <i class="fas fa-music text-success"></i> Merged Audio Result
+                        </h5>
+                        <!-- Custom visible close button -->
+                        <button type="button" class="custom-close-btn" id="closeModalBtn2" aria-label="Close">
+                            &times;
+                        </button>
+                    </div>
+                    <div class="modal-body2 text-center justify-content-center" id="resultModalBody2">
+                        <!-- Dynamic content will be injected here -->
+                    </div>
+                    <!-- <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-outline-light" id="closeModalFooterBtn">
+                        Close
+                        </button>
+                    </div> -->
+                </div>
+      </div>
     
     <script src="{{ url_for('static', filename= 'carousel-scripts.js') }}"> </script>
 

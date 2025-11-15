@@ -102,7 +102,19 @@ body {
     margin-bottom: 16px;
     position: relative;
     box-shadow: 0 0 6px rgba(255, 255, 255, 0.1);
+
+    /* Gradient setup */
+    /* background: linear-gradient(270deg, #ff6b6b, #f7d794, #1dd1a1, #54a0ff, #ff6b6b);
+    background-size: 1000% 1000%; */
+
+    /* Infinite animation */
+    /* animation: gradientShiftBanner 20s linear infinite; */
 }
+
+/* @keyframes gradientShiftBanner {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+} */
 
 /* The scrolling text itself */
 .scrolling-text {
@@ -154,13 +166,13 @@ body {
 /* .pause-btn.paused { background: rgba(255,255,255,0.9); color: #fff; } */
 
 
-.myOuterDiv {
+/* .myOuterDiv {
   border: 2px outset black;
   background-color: white;
   text-align: center;
   align: center;
   width: 100%;
-}
+} */
 
 .wrapper {
     width: 380px;
@@ -190,9 +202,10 @@ body {
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 20px;
-    box-shadow: 0px 5px 20px 10px rgba(227, 224, 21, 0.199);
+    /* box-shadow: 0px 5px 20px 10px rgba(227, 224, 21, 0.199); */
+    box-shadow: 0px 5px 20px 10px rgba(110, 143, 234, 0.4);
     position: relative;
-    width: max(50%, 500px);
+    width: min(80%, 600px);
 }
 
 
@@ -210,7 +223,7 @@ body {
     }
 }
 
-.urlDiv {
+/* .urlDiv {
             margin-bottom: 20px;
             border: 1px solid #ccc;
             padding: 15px;
@@ -218,7 +231,7 @@ body {
             width: 500px;
             margin-left: auto;
             margin-right: auto;
-        }
+        } */
 .remove-btn {
             position: absolute;
             top: 8px;
@@ -256,7 +269,7 @@ figure {
   border: 1px #cccccc solid;
   padding: 4px;
   margin: auto;
-  width: max(50%, 500px);
+  width: max(50%, 300px);
 }
 
 figcaption {
@@ -363,8 +376,10 @@ figcaption {
   font-size: 14px;
   border: 2px solid gray;
   float: left;
-  width: 50%;
+  width: 100%;
   background: #f1f1f1;
+  padding-left: 8px;
+  border-radius: 8px;
 }
 
 .inputTime:hover {
@@ -378,6 +393,8 @@ figcaption {
   float: left;
   width: 100%;
   background: #f1f1f1;
+  padding-left: 8px;
+  border-radius: 8px;
 }
 .inputURL:hover {
   border: 2px solid yellow;
@@ -445,7 +462,7 @@ form.search button:hover {
             border: 1px solid #ccc;
             padding: 15px;
             border-radius: 8px;
-            width: max(80%, 500px);
+            width: max(80%, 300px);
             max-height: 500px;
             overflow: auto;
             margin-left: auto;
@@ -528,7 +545,7 @@ form.search button:hover {
   height: 100%;
   position: relative;
   transform-style: preserve-3d;
-  animation: rotateCube 8s infinite linear;
+  animation: rotateCube 6s infinite linear;
 }
 
 .cube:hover {
@@ -567,9 +584,9 @@ form.search button:hover {
 
 /* --- Rotation animation --- */
 @keyframes rotateCube {
-  0%   { transform: rotateX(20deg) rotateY(20deg); }
-  25%  { transform: rotateX(110deg) rotateY(20deg); }
-  50%  { transform: rotateX(110deg) rotateY(110deg); }
-  75%  { transform: rotateX(200deg) rotateY(200deg); }
-  100% { transform: rotateX(380deg) rotateY(380deg); }
+  0%   { transform: rotateX(30deg) rotateY(30deg); }
+  25%  { transform: rotateX(120deg) rotateY(30deg); }
+  50%  { transform: rotateX(120deg) rotateY(120deg); }
+  75%  { transform: rotateX(210deg) rotateY(210deg); }
+  100% { transform: rotateX(390deg) rotateY(390deg); }
 }

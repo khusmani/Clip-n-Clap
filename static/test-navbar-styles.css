@@ -28,6 +28,19 @@ body {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     z-index: 1000;
     transition: background-color 0.3s ease;
+
+    /* Gradient setup */
+    background: linear-gradient(270deg, #ff6b6b, #571105, #035c45, #043570, #ff6b6b);
+    /* background: linear-gradient(270deg, #222222, #333333, #555555, #777777, #222222); */
+    background-size: 1000% 1000%;
+
+    /* Infinite animation */
+    animation: gradientShift1 20s linear infinite;
+}
+
+@keyframes gradientShift1 {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
 }
 
 .logo {
